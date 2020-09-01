@@ -20,11 +20,10 @@ class FileDataSourceSpec extends FlatSpec with Matchers with DataFrameSuiteBase 
     val config = FileSourceConfiguration(FormatType.Json, inputPath, None, options)
 
     val result1 = FileDataSource(config).read(spark)
-    val result2 = spark.source(config).read(spark)
     val expected = Seq(("Lucian", "Neghina", "M")).toDF("first_name", "last_name", "sex")
 
     assertDataFrameEquals(expected, result1)
-    assertDataFrameEquals(expected, result2)
+    noException shouldBe thrownBy(spark.source(config).read(spark))
   }
 
   it should "reading with schema" in {
@@ -41,11 +40,10 @@ class FileDataSourceSpec extends FlatSpec with Matchers with DataFrameSuiteBase 
     val config = FileSourceConfiguration(FormatType.Json, inputPath, Some(schema), options)
 
     val result = FileDataSource(config).read(spark)
-    val result2 = spark.source(config).read(spark)
     val expected = Seq(("Lucian", "Neghina", "M")).toDF("first_name", "last_name", "sex")
 
     assertDataFrameEquals(expected, result)
-    assertDataFrameEquals(expected, result2)
+    noException shouldBe thrownBy(spark.source(config).read(spark))
   }
 
   it should "fails if the file does not exist" in {

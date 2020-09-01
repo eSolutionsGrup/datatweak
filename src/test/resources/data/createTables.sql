@@ -1,0 +1,1 @@
+create table persons (id int PRIMARY KEY NOT NULL, name nvarchar(128), age int);

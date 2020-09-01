@@ -22,8 +22,8 @@ object SourceConfiguration {
                                            user: Option[String],
                                            password: Option[String],
                                            driver: Option[String],
-                                           options: Map[String, String],
-                                           schema: Option[StructType]) extends SourceConfiguration {
+                                           options: Map[String, String] = Map(),
+                                           schema: Option[StructType] = None) extends SourceConfiguration {
     val format = FormatType.Jdbc
     def readerOptions: Map[String, String] = {
       val userOption = user.map(v => Map("user" -> v)).getOrElse(Nil)
