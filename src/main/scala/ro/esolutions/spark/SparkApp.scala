@@ -12,28 +12,27 @@ trait SparkApp[Context, Result] extends JobRunnable[Context, Result] with Config
   def createContext(conf: ConfigSource): Context
 
   def main(args: Array[String]): Unit = {
+    val appArgs = AppArgs(args)
 
-    AppArgs(args) match {
-      case Some(appArgs) =>
-        implicit val spark = createSparkSession(appArgs.appName)
-        implicit val conf = appConfiguration(appArgs)
+    implicit val spark = createSparkSession(appArgs.appName)
+    implicit val conf = appConfiguration(appArgs)
 
-        val output = for {
-          context <- Try(createContext(conf))
-          result <- Try(run(spark, context))
-        } yield result
+    val output = for {
+      context <- Try(createContext(conf))
+      result <- Try(run(spark, context))
+    } yield result
 
-        output match {
-          case Success(_) => log.info(s"${appArgs.appName} successfully run")
-          case Failure(e) => log.error(s"${appArgs.appName} failed", e)
-        }
-
-        Try(spark.close) match {
-          case Success(_) => log.info(s"${appArgs.appName}: Spark session closed.")
-          case Failure(e) => log.error(s"${appArgs.appName}: Failed to close the spark session.", e)
-        }
-      case _ =>
+    output match {
+      case Success(_) => log.info(s"${appArgs.appName} successfully run")
+      case Failure(e) => log.error(s"${appArgs.appName} failed", e)
     }
+
+    Try(spark.close) match {
+      case Success(_) => log.info(s"${appArgs.appName}: Spark session closed.")
+      case Failure(e) => log.error(s"${appArgs.appName}: Failed to close the spark session.", e)
+    }
+
+    output.get
   }
 
   protected def createSparkSession(appName: String): SparkSession = {
