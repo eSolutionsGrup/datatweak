@@ -1,8 +1,8 @@
 package ro.esolutions.spark.io.sources
 
 import org.scalatest.{FlatSpec, Matchers}
-import pureconfig._
 import pureconfig.error.ConfigReaderException
+import pureconfig._
 import pureconfig.generic.auto._
 import ro.esolutions.spark.implicits._
 import ro.esolutions.spark.io._
@@ -29,7 +29,7 @@ class SourceConfigurationSpec extends FlatSpec with Matchers {
   "jdbc config" should "always has the format FormatType.Jdbc" in {
     val source = ConfigSource.string(
       """{"format" = "csv"
-        |  url = "jdbc://sdsdsa"
+        |  url = "jdbc://jdbc_url"
         |  table = "tbl" }""".stripMargin)
     val result = source.loadOrThrow[SourceConfiguration]
 

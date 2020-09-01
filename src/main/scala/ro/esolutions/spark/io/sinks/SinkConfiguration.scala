@@ -23,7 +23,7 @@ object SinkConfiguration {
                                    password: Option[String],
                                    driver: Option[String],
                                    saveMode: String = "default",
-                                   options: Map[String, String]) extends SinkConfiguration {
+                                   options: Map[String, String] = Map()) extends SinkConfiguration {
     val format = FormatType.Jdbc
     def writerOptions: Map[String, String] = {
       val userOption = user.map(v => Map("user" -> v)).getOrElse(Nil)
