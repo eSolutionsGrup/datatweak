@@ -20,7 +20,7 @@ final case class FileDataSource(configuration: FileSourceConfiguration)
       case Failure(e) =>
         val message = s"Failed to read the data as '${configuration.format}' from '${configuration.path}'"
         logError(message, e)
-        throw new Exception(message, e)
+        throw DataSourceException(message, e)
     }
   }
 

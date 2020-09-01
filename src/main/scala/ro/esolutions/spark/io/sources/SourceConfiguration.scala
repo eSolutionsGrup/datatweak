@@ -15,8 +15,8 @@ object SourceConfiguration {
 
   final case class FileSourceConfiguration(format: FormatType,
                                            path: String,
-                                           options: Map[String, String] = Map(),
-                                           schema: Option[StructType]) extends SourceConfiguration
+                                           schema: Option[StructType],
+                                           options: Map[String, String] = Map()) extends SourceConfiguration
   final case class JdbcSourceConfiguration(url: String,
                                            table: String,
                                            user: Option[String],

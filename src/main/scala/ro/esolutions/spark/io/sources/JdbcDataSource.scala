@@ -23,7 +23,7 @@ final case class JdbcDataSource(configuration: JdbcSourceConfiguration)
         val message = s"Failed to read the data as '${configuration.format}' from " +
           s"the '${configuration.table}' table of '${configuration.url}' (Full configuration: ${configuration})"
         logError(message, e)
-        throw new Exception(message, e)
+        throw DataSourceException(message, e)
     }
   }
 
