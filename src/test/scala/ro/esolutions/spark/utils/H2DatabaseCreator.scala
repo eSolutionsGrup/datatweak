@@ -5,9 +5,11 @@ import java.sql.{Connection, DriverManager, PreparedStatement, Statement}
 
 import org.apache.spark.internal.Logging
 import org.h2.tools.RunScript
-import org.scalatest.{BeforeAndAfterAll, FlatSpec}
+import org.scalatest.{BeforeAndAfterAll, Suite}
 
-trait H2DatabaseCreator extends FlatSpec with BeforeAndAfterAll with Logging {
+trait H2DatabaseCreator extends BeforeAndAfterAll with Logging {
+  this: Suite =>
+
   val h2url = "jdbc:h2:mem:test;"
   val driver = "org.h2.Driver"
   val table = "persons"

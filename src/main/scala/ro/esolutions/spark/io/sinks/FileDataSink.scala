@@ -21,7 +21,7 @@ final case class FileDataSink(configuration: FileSinkConfiguration)
         val message = s"Failed to save the data as '${configuration.format}' to '${configuration.path}' " +
           s"(Full configuration: ${configuration})."
         logError(message)
-        throw new Exception(message, ex)
+        throw new DataSinkException(message, ex)
     }
   }
 

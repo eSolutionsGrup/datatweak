@@ -24,7 +24,7 @@ case class JdbcDataSink(configuration: JdbcSinkConfiguration)
           s"to the '${configuration.table}' table of '${configuration.url}' " +
           s"(Full configuration: ${configuration})."
         logError(message)
-        throw new Exception(message, ex)
+        throw new DataSinkException(message, ex)
     }
   }
 
