@@ -15,6 +15,7 @@ trait TempFilePath extends BeforeAndAfterEach {
   private val tempDir = Option(System.getProperty("java.io.tmpdir")).getOrElse("/tmp")
 
   def tempPath: String = file.getAbsolutePath
+  def tempFile: File = file
 
   override def beforeEach(): Unit = {
     super.beforeEach()

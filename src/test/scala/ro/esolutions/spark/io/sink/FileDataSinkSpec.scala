@@ -1,20 +1,22 @@
 package ro.esolutions.spark.io.sink
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
-import org.apache.spark.sql.{DataFrame, SaveMode}
+import org.apache.spark.sql.DataFrame
 import org.scalatest.{FlatSpec, Matchers}
-import ro.esolutions.spark.io.FormatType
+import ro.esolutions.spark.implicits._
+import ro.esolutions.spark.io.{FormatType, _}
+import ro.esolutions.spark.io.sinks.DataSinkException
 import ro.esolutions.spark.io.sinks.SinkConfiguration.FileSinkConfiguration
 import ro.esolutions.spark.utils.TempFilePath
-import ro.esolutions.spark.implicits._
-import ro.esolutions.spark.io._
-import ro.esolutions.spark.io.sinks.DataSinkException
 
 class FileDataSinkSpec extends FlatSpec with Matchers with DataFrameSuiteBase with TempFilePath {
 
   lazy val inputData = {
     import spark.implicits._
-    Seq(("Lucian", "Neghina", "M")).toDF("first_name", "last_name", "sex")
+    Seq(("1", "Lucian", "Neghina", "M"),
+      ("2", "Eliza", "Popescu", "F"),
+      ("3", "Wesley", "Taylor", "M"),
+      ("4", "Peyton", "Fuller", "F")).toDF("id", "first_name", "last_name", "sex")
   }
   val format = FormatType.Parquet
 
@@ -23,7 +25,7 @@ class FileDataSinkSpec extends FlatSpec with Matchers with DataFrameSuiteBase wi
     noException shouldBe thrownBy(inputData.sink(sinkConfig).write)
 
     val writtenData: DataFrame = spark.read.parquet(tempPath)
-    assertDataFrameEquals(inputData, writtenData)
+    assertDataFrameEquals(inputData.orderBy("id"), writtenData.orderBy("id"))
   }
 
   it should "fail if file already exists and the SaveMode.default" in {
@@ -38,8 +40,52 @@ class FileDataSinkSpec extends FlatSpec with Matchers with DataFrameSuiteBase wi
     noException shouldBe thrownBy(inputData.sink(sinkConfig).write)
 
     val writtenData: DataFrame = spark.read.parquet(tempPath)
-    assertDataFrameEquals(inputData, writtenData)
+    assertDataFrameEquals(inputData.orderBy("id"), writtenData.orderBy("id"))
   }
 
+  it should "saving the input partitioned" in {
+    val partition = "sex"
+    val sinkConfig = FileSinkConfiguration(
+      format = format,
+      path = tempPath,
+      partitionColumns = Seq(partition))
+
+    noException shouldBe thrownBy(inputData.sink(sinkConfig).write)
+
+    val writtenData: DataFrame = spark.read.parquet(tempPath)
+    assertDataFrameEquals(inputData.orderBy("id"), writtenData.orderBy("id"))
+
+    val filePartitions = tempFile.listFiles().filter(_.getPath.contains(s"/$partition="))
+    filePartitions.size should be > 0
+  }
+
+  it should "saving maximum number of partitions" in {
+    val partition = 3
+    val sinkConfig = FileSinkConfiguration(
+      format = format,
+      path = tempPath,
+      partitionFilesNumber = Some(partition))
+
+    noException shouldBe thrownBy(inputData.sink(sinkConfig).write)
+
+    val writtenData: DataFrame = spark.read.parquet(tempPath)
+    assertDataFrameEquals(inputData.orderBy("id"), writtenData.orderBy("id"))
+
+    val filePartitions = tempFile.listFiles().filter(_.getPath.endsWith("parquet"))
+    filePartitions.size shouldBe(partition)
+  }
+
+  it should "saving in Hive" in {
+    val tableName = "test_tbl"
+    val sinkConfig = FileSinkConfiguration(
+      format = format,
+      path = tableName,
+      buckets = Some(Buckets(1, Seq("sex"))))
+
+    noException shouldBe thrownBy(inputData.sink(sinkConfig).write)
+
+    val writtenData: DataFrame = spark.sql(s"select * from $tableName")
+    assertDataFrameEquals(inputData.orderBy("id"), writtenData.orderBy("id"))
+  }
 
 }
