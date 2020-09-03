@@ -1,7 +1,5 @@
 package ro.esolutions.spark.io.sink
 
-import java.sql.ResultSet
-
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.apache.spark.sql.DataFrame
 import org.scalatest.{FlatSpec, Matchers}
@@ -30,7 +28,7 @@ class JdbcDataSinkSpec extends FlatSpec with Matchers with H2DatabaseCreator wit
   it should "saving with SaveMode.default if table not exists" in {
     noException shouldBe thrownBy(inputData.sink(config).write)
 
-    val result: DataFrame =  spark.read.format("jdbc").options(config.writerOptions).load()
+    val result: DataFrame = spark.read.format("jdbc").options(config.writerOptions).load()
     assertDataFrameEquals(inputData, result)
   }
 
@@ -43,7 +41,7 @@ class JdbcDataSinkSpec extends FlatSpec with Matchers with H2DatabaseCreator wit
     createDatabases(jdbcConnection)
     noException shouldBe thrownBy(inputData.sink(config.copy(saveMode = "overwrite")).write)
 
-    val result: DataFrame =  spark.read.format("jdbc").options(config.writerOptions).load()
+    val result: DataFrame = spark.read.format("jdbc").options(config.writerOptions).load()
     assertDataFrameEquals(inputData, result)
   }
 }

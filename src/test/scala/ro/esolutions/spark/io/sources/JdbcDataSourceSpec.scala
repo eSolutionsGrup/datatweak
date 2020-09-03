@@ -7,7 +7,8 @@ import ro.esolutions.spark.io.sources.SourceConfiguration.JdbcSourceConfiguratio
 import ro.esolutions.spark.implicits._
 import ro.esolutions.spark.utils.H2DatabaseCreator
 
-class JdbcDataSourceSpec extends FlatSpec with Matchers with DataFrameSuiteBase with H2DatabaseCreator with BeforeAndAfterAll {
+class JdbcDataSourceSpec extends FlatSpec with Matchers
+                          with DataFrameSuiteBase with H2DatabaseCreator with BeforeAndAfterAll {
 
   override def beforeAll(): Unit = {
     createDatabases(jdbcConnection)
