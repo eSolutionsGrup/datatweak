@@ -12,11 +12,9 @@ import ro.esolutions.spark.utils.TempFilePath
 class FileDataSinkSpec extends FlatSpec with Matchers with DataFrameSuiteBase with TempFilePath {
 
   lazy val inputData = {
-    import spark.implicits._
-    Seq(("1", "Lucian", "Neghina", "M"),
-      ("2", "Eliza", "Popescu", "F"),
-      ("3", "Wesley", "Taylor", "M"),
-      ("4", "Peyton", "Fuller", "F")).toDF("id", "first_name", "last_name", "sex")
+    spark.read
+      .options(Map("header" -> "true", "inferSchema" -> "true"))
+      .csv("src/test/resources/data/csv/users.csv")
   }
   val format = FormatType.Parquet
 
@@ -44,7 +42,7 @@ class FileDataSinkSpec extends FlatSpec with Matchers with DataFrameSuiteBase wi
   }
 
   it should "saving the input partitioned" in {
-    val partition = "sex"
+    val partition = "gender"
     val sinkConfig = FileSinkConfiguration(
       format = format,
       path = tempPath,
@@ -52,15 +50,12 @@ class FileDataSinkSpec extends FlatSpec with Matchers with DataFrameSuiteBase wi
 
     noException shouldBe thrownBy(inputData.sink(sinkConfig).write)
 
-    val writtenData: DataFrame = spark.read.parquet(tempPath)
-    assertDataFrameEquals(inputData.orderBy("id"), writtenData.orderBy("id"))
-
     val filePartitions = tempFile.listFiles().filter(_.getPath.contains(s"/$partition="))
     filePartitions.size should be > 0
   }
 
   it should "saving maximum number of partitions" in {
-    val partition = 3
+    val partition = 2
     val sinkConfig = FileSinkConfiguration(
       format = format,
       path = tempPath,
@@ -68,11 +63,8 @@ class FileDataSinkSpec extends FlatSpec with Matchers with DataFrameSuiteBase wi
 
     noException shouldBe thrownBy(inputData.sink(sinkConfig).write)
 
-    val writtenData: DataFrame = spark.read.parquet(tempPath)
-    assertDataFrameEquals(inputData.orderBy("id"), writtenData.orderBy("id"))
-
     val filePartitions = tempFile.listFiles().filter(_.getPath.endsWith("parquet"))
-    filePartitions.size shouldBe(partition)
+    filePartitions.size should be <= partition
   }
 
   it should "saving in Hive" in {
@@ -80,7 +72,7 @@ class FileDataSinkSpec extends FlatSpec with Matchers with DataFrameSuiteBase wi
     val sinkConfig = FileSinkConfiguration(
       format = format,
       path = tableName,
-      buckets = Some(Buckets(1, Seq("sex"))))
+      buckets = Some(Buckets(1, Seq("gender"))))
 
     noException shouldBe thrownBy(inputData.sink(sinkConfig).write)
 
