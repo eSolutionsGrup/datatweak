@@ -1,1 +1,1 @@
-create table persons (id int PRIMARY KEY NOT NULL, name nvarchar(128), age int);
+create table IF NOT EXISTS persons (id int PRIMARY KEY NOT NULL, first_name text, last_name text, gender text);

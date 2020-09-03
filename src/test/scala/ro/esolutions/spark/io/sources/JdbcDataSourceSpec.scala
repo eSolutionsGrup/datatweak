@@ -2,19 +2,17 @@ package ro.esolutions.spark.io.sources
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.apache.spark.sql.Row
-import org.apache.spark.sql.types.{DataTypes, StructField, StructType}
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 import ro.esolutions.spark.io.sources.SourceConfiguration.JdbcSourceConfiguration
 import ro.esolutions.spark.implicits._
 import ro.esolutions.spark.utils.H2DatabaseCreator
 
-class JdbcDataSourceSpec extends FlatSpec with Matchers with DataFrameSuiteBase with H2DatabaseCreator {
+class JdbcDataSourceSpec extends FlatSpec with Matchers with DataFrameSuiteBase with H2DatabaseCreator with BeforeAndAfterAll {
 
-  val schema = StructType(Seq(
-    StructField("ID", DataTypes.IntegerType),
-    StructField("NAME", DataTypes.StringType),
-    StructField("AGE", DataTypes.IntegerType)
-  ))
+  override def beforeAll(): Unit = {
+    createDatabases(jdbcConnection)
+    super.beforeAll()
+  }
 
   val config = JdbcSourceConfiguration(url = h2url,
     table = table,
@@ -23,12 +21,15 @@ class JdbcDataSourceSpec extends FlatSpec with Matchers with DataFrameSuiteBase 
     driver = Some(driver))
 
   it should "reading" in {
-    val persons = Seq((1, "neghina", 40), (2, "john", 35))
+    val persons = Seq(
+      (1, "enrique", "rodriquez", "male"),
+      (2, "krin", "newman", "female")
+    )
     insertTable(jdbcConnection, persons)
 
     val result = JdbcDataSource(config).read(spark)
     val expected = spark.createDataFrame(
-      spark.sparkContext.parallelize(persons.map(p => Row(p._1, p._2, p._3))),
+      spark.sparkContext.parallelize(persons.map(p => Row(p._1, p._2, p._3, p._4))),
       schema
     )
 
