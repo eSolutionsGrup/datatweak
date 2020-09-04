@@ -16,7 +16,7 @@ class DataFrameSinkFactorySpec extends FlatSpec with Matchers with DataFrameSuit
 
   "FileSinkConfiguration" should "create FileDataSource" in {
     val config = FileSinkConfiguration(
-                    format = FormatType.Text,
+                    format = FormatType.FileFormat("text"),
                     path = "file:///tmp/")
     val result = dataSinkFactory(config, emptyDF)
 

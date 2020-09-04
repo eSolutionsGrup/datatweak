@@ -17,7 +17,7 @@ class SinkConfigurationSpec extends FlatSpec with Matchers {
     val result = source.loadOrThrow[SinkConfiguration]
 
     result shouldBe a[FileSinkConfiguration]
-    result.format shouldBe FormatType.Parquet
+    result.format shouldBe FormatType.FileFormat("parquet")
     result.asInstanceOf[FileSinkConfiguration].saveMode shouldBe "default"
   }
 
@@ -32,7 +32,7 @@ class SinkConfigurationSpec extends FlatSpec with Matchers {
     val result = source.loadOrThrow[SinkConfiguration]
 
     result shouldBe a[FileSinkConfiguration]
-    result.format shouldBe FormatType.Parquet
+    result.format shouldBe FormatType.FileFormat("parquet")
     result.asInstanceOf[FileSinkConfiguration].saveMode shouldBe "default"
     result.asInstanceOf[FileSinkConfiguration].buckets shouldBe Some(Buckets(3, Seq("id")))
   }

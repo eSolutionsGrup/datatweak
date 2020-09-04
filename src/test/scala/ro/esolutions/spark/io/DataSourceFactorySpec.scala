@@ -7,7 +7,7 @@ import ro.esolutions.spark.io.sources.{FileDataSource, JdbcDataSource}
 
 class DataSourceFactorySpec extends FlatSpec with Matchers {
   "FileSourceConfiguration" should "create FileDataSource" in {
-    val config = FileSourceConfiguration(FormatType.Text, "file:///tmp/", None, Map())
+    val config = FileSourceConfiguration(FormatType.FileFormat("text"), "file:///tmp/", None, Map())
     val result = dataSourceFactory(config)
 
     result shouldBe a[FileDataSource]

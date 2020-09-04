@@ -44,7 +44,6 @@ package object io {
       configuration match {
         case c: FileSourceConfiguration => FileDataSource(c).asInstanceOf[DataSource[Config]]
         case c: JdbcSourceConfiguration => JdbcDataSource(c).asInstanceOf[DataSource[Config]]
-        case c => throw new IllegalArgumentException(s"Unsupported configuration type ${c.getClass}")
       }
     }
   }
@@ -54,7 +53,6 @@ package object io {
       configurator match {
         case c: FileSinkConfiguration => FileDataFrameSink(c, data).asInstanceOf[DataFrameSink[Config, WriteOut]]
         case c: JdbcSinkConfiguration => JdbcDataFrameSink(c, data).asInstanceOf[DataFrameSink[Config, WriteOut]]
-        case c => throw new IllegalArgumentException(s"Unsupported configuration type ${c.getClass}")
       }
     }
   }

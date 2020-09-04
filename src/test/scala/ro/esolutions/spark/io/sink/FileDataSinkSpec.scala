@@ -16,7 +16,7 @@ class FileDataSinkSpec extends FlatSpec with Matchers with DataFrameSuiteBase wi
       .options(Map("header" -> "true", "inferSchema" -> "true"))
       .csv("src/test/resources/data/csv/users.csv")
   }
-  val format = FormatType.Parquet
+  val format = FormatType.FileFormat("parquet")
 
   it should "saving the input data" in {
     val sinkConfig = FileSinkConfiguration(format, tempPath)

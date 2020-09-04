@@ -17,7 +17,7 @@ class FileDataSourceSpec extends FlatSpec with Matchers with DataFrameSuiteBase 
       "columnNameOfCorruptRecord" -> "_corrupt_record",
       "mode" -> "FAILFAST",
       "multiLine" -> "true")
-    val config = FileSourceConfiguration(FormatType.Json, inputPath, None, options)
+    val config = FileSourceConfiguration(FormatType.FileFormat("json"), inputPath, None, options)
 
     val result1 = FileDataSource(config).read(spark)
     val expected = Seq(("Lucian", "Neghina", "M")).toDF("first_name", "last_name", "sex")
@@ -37,7 +37,7 @@ class FileDataSourceSpec extends FlatSpec with Matchers with DataFrameSuiteBase 
       StructField("last_name", DataTypes.StringType),
       StructField("sex", DataTypes.StringType)
     ))
-    val config = FileSourceConfiguration(FormatType.Json, inputPath, Some(schema), options)
+    val config = FileSourceConfiguration(FormatType.FileFormat("json"), inputPath, Some(schema), options)
 
     val result = FileDataSource(config).read(spark)
     val expected = Seq(("Lucian", "Neghina", "M")).toDF("first_name", "last_name", "sex")
@@ -48,7 +48,7 @@ class FileDataSourceSpec extends FlatSpec with Matchers with DataFrameSuiteBase 
 
   it should "fails if the file does not exist" in {
     val inputPath = "unknown/path/to/inexistent/file.txt"
-    val config = FileSourceConfiguration(FormatType.Text, inputPath, None)
+    val config = FileSourceConfiguration(FormatType.FileFormat("text"), inputPath, None)
     a[DataSourceException] shouldBe thrownBy(FileDataSource(config).read(spark))
     a[DataSourceException] shouldBe thrownBy(spark.source(config).read(spark))
 

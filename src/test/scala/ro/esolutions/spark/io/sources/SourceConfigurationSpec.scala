@@ -15,7 +15,7 @@ class SourceConfigurationSpec extends FlatSpec with Matchers {
     val result = source.loadOrThrow[SourceConfiguration]
 
     result shouldBe a[FileSourceConfiguration]
-    result.format shouldBe FormatType.Csv
+    result.format shouldBe FormatType.FileFormat("csv")
   }
 
   it should "auto loading jdbc config" in {
