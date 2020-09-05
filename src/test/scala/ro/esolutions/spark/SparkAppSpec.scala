@@ -17,7 +17,7 @@ class SparkAppSpec extends FlatSpec with DataFrameSuiteBase with Matchers {
   }
 
   "SparkApp.main" should "fails without job name argument" in {
-    a[NoSuchElementException] shouldBe thrownBy(MockApp.main(Array()))
+    a[IllegalArgumentException] shouldBe thrownBy(MockApp.main(Array()))
   }
 
   "SparkApp.main" should "fails if SparkApp.createContext fails" in {
