@@ -6,14 +6,14 @@ import scopt.{DefaultOParserSetup, OParser}
 
 import scala.util.Try
 
-case class AppArgs(appName: String = "",
-                   namespace: Option[String] = None,
-                   url: Option[URL] = None,
-                   literalConf: Option[String] = None)
+case class Args(appName: String = "",
+                namespace: Option[String] = None,
+                url: Option[URL] = None,
+                literalConf: Option[String] = None)
 
-object AppArgs {
-  def apply(args: Array[String]): AppArgs = {
-    val builder = OParser.builder[AppArgs]
+object Args {
+  def apply(args: Array[String]): Option[Args] = {
+    val builder = OParser.builder[Args]
     val parser = {
       import builder._
       OParser.sequence(
@@ -45,6 +45,6 @@ object AppArgs {
       override def errorOnUnknownArgument: Boolean = false
     }
 
-    OParser.parse(parser, args, AppArgs(), setup).get
+    OParser.parse(parser, args, Args(), setup)
   }
 }
