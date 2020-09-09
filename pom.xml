@@ -6,7 +6,7 @@
 
     <groupId>ro.esolutions.spark</groupId>
     <artifactId>spark-app-base</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1</version>
 
     <name>spark-app-base</name>
     <description>Base classes to use when writing Apache Spark applications in Scala</description>
