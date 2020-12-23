@@ -5,4 +5,4 @@ import ro.esolutions.datatweak.io.sources.SourceConfiguration
 
 case class DataSource(name: String, input: SourceConfiguration)
 
-case class SqlContext(source: List[DataSource], output: SinkConfiguration, query: String)
+case class QueryContext(source: List[DataSource], output: SinkConfiguration, query: String)
