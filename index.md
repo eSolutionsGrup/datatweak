@@ -5,6 +5,7 @@
 - avro
 - parquet
 - hive
+
 ### Supported output
 - avro
 - parquet
