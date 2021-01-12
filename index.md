@@ -17,15 +17,16 @@ This guide helps you quickly explore the main features of Data Tweak.
 It provides config snippets that show how to read, define the steps and queries of the ETL and write data.
 
 ### Config
+
+* * *
+
 DataTweak configurations is base on [PureConfig](https://pureconfig.github.io) which reads a config from: 
 * a file in a file system
 * resources in your classpath 
 * an URL 
 * a string
 
-#### Data ingest
-
-* * *
+### Data ingest
 
 Read a CSV with header using schema and save to avro format.
 ```
@@ -59,9 +60,7 @@ Read a CSV with header using schema and save to avro format.
 ```
 
 
-#### Data wrangling 
-
-* * *
+### Data wrangling 
 
 Read tow avro files, join it and save to parquet format.
 ```
@@ -89,6 +88,9 @@ Read tow avro files, join it and save to parquet format.
 ```
 
 ### Run
+
+* * *
+
 Usage: `spark-submit... <application-jar> [options]`
   
 Available options:
