@@ -24,10 +24,13 @@ DataTweak configurations is base on [PureConfig](https://pureconfig.github.io) w
 * a string
 
 ### Run
-Usage: spark-submit... <application-jar> [options]
+Usage: `spark-submit... <application-jar> [options]`
   
 Available options:
-  -j, --job <value>        job is a required application name property
-  -n, --namespace <value>  optional configuration namespace property
-  -u, --url <value>        optional config url property
-  -l, --literal <value>    optional literal config property 
+
+option | description
+--- | --- 
+-j, --job <value>        | job is a required application name property
+-n, --namespace <value>  | optional configuration namespace property
+-u, --url <value>        | optional config url property
+-l, --literal <value>    | optional literal config property
