@@ -1,16 +1,19 @@
 ![DataTweak](datatweak.png)
-## Supported input
-- json
-- csv
-- avro
-- parquet
-- hive
+### Supported input
+- File
+    - json
+    - csv
+    - avro
+    - parquet
+- Jdbc
 
-## Supported output
-- avro
-- parquet
-- delta lake 
-- hive
+### Supported output
+- File
+    - json
+    - csv
+    - avro
+    - parquet
+- Jdbc
 
 ## Quickstart
 This guide helps you quickly explore the main features of Data Tweak. 
