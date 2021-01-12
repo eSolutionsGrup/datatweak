@@ -23,9 +23,10 @@ DataTweak configurations is base on [PureConfig](https://pureconfig.github.io) w
 * an URL 
 * a string
 
-#### Config example
-Data ingest
-***
+#### Data ingest
+
+* * *
+
 Read a CSV with header using schema and save to avro format.
 ```
     input: {
@@ -58,8 +59,10 @@ Read a CSV with header using schema and save to avro format.
 ```
 
 
-Data wrangling 
-***
+#### Data wrangling 
+
+* * *
+
 Read tow avro files, join it and save to parquet format.
 ```
     source: [
