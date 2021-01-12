@@ -28,9 +28,9 @@ Usage: `spark-submit... <application-jar> [options]`
   
 Available options:
 
-option | description
---- | --- 
--j, --job <value>        | job is a required application name property
--n, --namespace <value>  | optional configuration namespace property
--u, --url <value>        | optional config url property
--l, --literal <value>    | optional literal config property
+| option       | description       |
+|:-------------|:------------------|
+|-j, --job <value>        | job is a required application name property |
+|-n, --namespace <value>  | optional configuration namespace property |
+|-u, --url <value>        | optional config url property |
+|-l, --literal <value>    | optional literal config property |
