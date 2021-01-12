@@ -23,6 +23,68 @@ DataTweak configurations is base on [PureConfig](https://pureconfig.github.io) w
 * an URL 
 * a string
 
+#### Config example
+Data ingest
+***
+Read a CSV with header using schema and save to avro format.
+```
+    input: {
+        format = "csv"
+        path = "file:///datasets/users.csv"
+        options = {
+        "header": "true"
+        }
+        schema = """{
+            "type": "struct",
+            "fields": [{
+              "name": "id",
+              "type": "integer",
+              "nullable": false
+            }, {
+              "name": "name",
+              "type": "string",
+              "nullable": false
+            }, {
+              "name": "age",
+              "type": "integer",
+              "nullable": true
+            }]
+          }"""
+    }
+    output: {
+        format = "avro"
+        path = "file://bootcamp/avro/"
+    }
+```
+
+
+Data wrangling 
+***
+Read tow avro files, join it and save to parquet format.
+```
+    source: [
+        {
+            "name": "orders"
+            input: {
+                format = "avro"
+                path = "file:///home/lucian/workspace/bigdata/datasets/retail/warehouse/orders/"
+            }
+        },
+        {
+            "name": "order_items"
+            input: {
+                format = "avro"
+                path = "file:///home/lucian/workspace/bigdata/datasets/retail/warehouse/order_items/"
+            }
+        }
+    ]
+    query: "SELECT * FROM orders o JOIN order_items i ON (o.order_id == i.order_item_order_id)"
+    output: {
+        format = "parquet"
+        path = "file:///tmp/bootcamp/parquet/"
+    }
+```
+
 ### Run
 Usage: `spark-submit... <application-jar> [options]`
   
