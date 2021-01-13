@@ -104,3 +104,16 @@ Available options:
 |-n, --namespace <value>  | optional configuration namespace property |
 |-u, --url <value>        | optional config url property |
 |-l, --literal <value>    | optional literal config property |
+
+Example:
+```
+./bin/spark-submit \
+  --class ro.esolutions.datatweak.apps.QueryApp \
+  --master spark://localhost:7077 \
+  --conf spark.eventLog.enabled=false \
+  --conf spark.serializer=org.apache.spark.serializer.KryoSerializer \
+  hdfs://spark/jars/apps-0.3.1.jar \
+  -j queryJobs \
+  -u http://localhost:8080/config/wrangling
+ ```
+Note: config-service (localhost:8080) return _Data wrangling conf_. 
