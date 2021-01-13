@@ -116,4 +116,4 @@ Example:
   -j queryJobs \
   -u http://localhost:8080/config/wrangling
  ```
-Note: config-service (localhost:8080) return _Data wrangling conf_. 
+Note: config-service (localhost:8080) return [Data wrangling conf](./index.html#data-wrangling). 
