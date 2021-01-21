@@ -13,7 +13,7 @@ object QueryApp extends SparkApp[QueryContext, Unit] {
   override def createContext(conf: ConfigSource): QueryContext = conf.loadOrThrow[QueryContext]
 
   override def run(implicit spark: SparkSession, context: QueryContext): Unit = {
-    context.source.foreach(s => spark.source(s.input).read.createOrReplaceTempView(s.name))
+    context.source.foreach(s => spark.source(s.input).read.createOrReplaceTempView(s.view))
     val df = spark.sql(context.query)
     df.sink(context.output).write
   }
