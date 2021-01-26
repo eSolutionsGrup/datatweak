@@ -5,14 +5,11 @@
     <parent>
         <artifactId>datatweak</artifactId>
         <groupId>ro.esolutions.datatweak</groupId>
-        <version>0.3.1</version>
+        <version>0.3.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ro.esolutions.datatweak</groupId>
     <artifactId>core</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
-    <name>datatweak-core</name>
 
     <dependencies>
         <dependency>

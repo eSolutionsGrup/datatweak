@@ -7,7 +7,7 @@
     <groupId>ro.esolutions.datatweak</groupId>
     <artifactId>datatweak</artifactId>
     <packaging>pom</packaging>
-    <version>0.3.1</version>
+    <version>0.3.2-SNAPSHOT</version>
     <modules>
         <module>core</module>
         <module>apps</module>
